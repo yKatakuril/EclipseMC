@@ -1,154 +1,108 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>EclipseMC</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>EclipseMC</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0d0d0d;
-      color: white;
-    }
+<style>
+body {
+  background: #0a0a0a;
+  color: white;
+  font-family: Arial;
+  text-align: center;
+}
 
-    header {
-      background: #111;
-      padding: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid purple;
-    }
+h1 { color: #7a00cc; }
 
-    header h1 {
-      color: #a020f0;
-    }
+.box {
+  background: #111;
+  padding: 20px;
+  margin: 20px auto;
+  width: 300px;
+  border-radius: 10px;
+  border: 1px solid #4b0082;
+}
 
-    nav a {
-      margin: 0 10px;
-      color: white;
-      text-decoration: none;
-      transition: 0.3s;
-    }
+input {
+  width: 90%;
+  padding: 10px;
+  margin: 5px;
+  background: #1a1a1a;
+  border: none;
+  color: white;
+}
 
-    nav a:hover {
-      color: #a020f0;
-    }
+button {
+  width: 95%;
+  padding: 10px;
+  background: #7a00cc;
+  border: none;
+  color: white;
+}
 
-    .hero {
-      text-align: center;
-      padding: 60px 20px;
-      background: linear-gradient(black, #1a001f);
-    }
-
-    .hero h2 {
-      font-size: 40px;
-    }
-
-    .ip-box {
-      background: #1a1a1a;
-      padding: 15px;
-      margin-top: 20px;
-      display: inline-block;
-      border-radius: 10px;
-      border: 1px solid purple;
-    }
-
-    .login {
-      background: #111;
-      padding: 30px;
-      max-width: 300px;
-      margin: 40px auto;
-      border-radius: 10px;
-      border: 1px solid purple;
-    }
-
-    .login input {
-      width: 100%;
-      padding: 10px;
-      margin: 5px 0;
-      background: #1a1a1a;
-      border: none;
-      color: white;
-    }
-
-    .login button {
-      width: 100%;
-      padding: 10px;
-      background: purple;
-      border: none;
-      color: white;
-      cursor: pointer;
-    }
-
-    .ranking {
-      padding: 40px;
-      text-align: center;
-    }
-
-    .ranking h2 {
-      color: #a020f0;
-    }
-
-    .player {
-      background: #1a1a1a;
-      margin: 10px auto;
-      padding: 10px;
-      max-width: 400px;
-      border-radius: 8px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: #111;
-      margin-top: 40px;
-      border-top: 1px solid purple;
-    }
-  </style>
+button:hover {
+  background: #ff0033;
+}
+</style>
 </head>
 
 <body>
 
-<header>
-  <h1>EclipseMC</h1>
-  <nav>
-    <a href="#">Início</a>
-    <a href="#">Loja</a>
-    <a href="#">Regras</a>
-    <a href="#">Discord</a>
-  </nav>
-</header>
+<h1>EclipseMC</h1>
 
-<section class="hero">
-  <h2>Bem-vindo ao EclipseMC</h2>
-  <p>O melhor servidor semi-anárquico</p>
-
-  <div class="ip-box">
-    IP: jogar.eclipsemc.com
-  </div>
-</section>
-
-<section class="login">
+<div class="box">
   <h3>Login</h3>
-  <input type="text" placeholder="Usuário">
-  <input type="password" placeholder="Senha">
-  <button>Entrar</button>
-</section>
+  <input id="loginEmail" type="email" placeholder="Email">
+  <input id="loginSenha" type="password" placeholder="Senha">
+  <button onclick="login()">Entrar</button>
+</div>
 
-<section class="ranking">
-  <h2>Top Doadores</h2>
+<div class="box">
+  <h3>Criar Conta</h3>
+  <input id="regEmail" type="email" placeholder="Email">
+  <input id="regSenha" type="password" placeholder="Senha">
+  <button onclick="registrar()">Registrar</button>
+</div>
 
-  <div class="player">1. PlayerTop - R$500</div>
-  <div class="player">2. EclipseGod - R$300</div>
-  <div class="player">3. ShadowPvP - R$150</div>
-</section>
+<script>
+const supabase = supabase.createClient(
+  "COLE_SUA_URL_AQUI",
+  "COLE_SUA_KEY_AQUI"
+);
 
-<footer>
-  © 2026 EclipseMC - Todos os direitos reservados
-</footer>
+async function registrar() {
+  const email = document.getElementById("regEmail").value;
+  const senha = document.getElementById("regSenha").value;
+
+  const { error } = await supabase.auth.signUp({
+    email: email,
+    password: senha
+  });
+
+  if (error) {
+    alert("Erro: " + error.message);
+  } else {
+    alert("Conta criada! 🔥");
+  }
+}
+
+async function login() {
+  const email = document.getElementById("loginEmail").value;
+  const senha = document.getElementById("loginSenha").value;
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email: email,
+    password: senha
+  });
+
+  if (error) {
+    alert("Erro: " + error.message);
+  } else {
+    alert("Login realizado 😈");
+  }
+}
+</script>
 
 </body>
 </html>
